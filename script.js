@@ -1,3 +1,5 @@
+// ======== TEXT -> FSM REPRESENTATION ========
+
 function textToFSM(text) {
   const words = text.trim().split(/\s+/).filter(Boolean);
   if (words.length === 0) return { states: [], transitions: [] };
@@ -35,7 +37,7 @@ function textToFSM(text) {
   return { states, transitions, hasRepeats };
 }
 
-// ---- SVG rendering ----
+// ======== SVG RENDERING ========
 
 const RADIUS = 42;
 const PADDING = 90;
@@ -391,7 +393,7 @@ function drawSelfLoop(svg, p, label) {
   }
 }
 
-// ---- Zoom & pan ----
+// ======== ZOOM & PAN ========
 
 const MIN_ZOOM_REL = 0.15;
 const MAX_ZOOM_REL = 2;
@@ -493,8 +495,13 @@ function setStatus(msg, isError) {
 }
 
 document.getElementById("createBtn").addEventListener("click", () => {
-  const text = document.getElementById("textInput").value;
+  const text = document.getElementById("textInput").innerText;
+  const words = text.trim().split(/\s+/).filter(Boolean);
   try {
+    if (words.length > MAX_WORDS) {
+      throw new Error(`word limit exceeded (${words.length} / ${MAX_WORDS})`);
+    }
+
     const fsm = textToFSM(text);
     if (!fsm || !Array.isArray(fsm.states) || !Array.isArray(fsm.transitions)) {
       throw new Error("textToFSM must return { states: [], transitions: [] }");
@@ -510,4 +517,29 @@ document.getElementById("createBtn").addEventListener("click", () => {
     console.error(err);
     setStatus("error: " + err.message, true);
   }
+});
+
+// ======== WORD LIMIT ========
+
+const MAX_WORDS = 2000;
+const textInput = document.getElementById("textInput");
+const wordCount = document.getElementById("wordCount");
+
+let updatingText = false;
+
+function updateWordLimit() {
+  const text = textInput.innerText;
+  const words = text.trim().split(/\s+/).filter(Boolean);
+
+  wordCount.textContent = `${words.length} / ${MAX_WORDS}`;
+
+  if (words.length > MAX_WORDS) {
+    wordCount.classList.add("limit-exceeded");
+  } else {
+    wordCount.classList.remove("limit-exceeded");
+  }
+}
+
+textInput.addEventListener("input", () => {
+  updateWordLimit();
 });

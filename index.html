@@ -28,7 +28,10 @@
       </div>
 
       <div class="sidebar">
-        <textarea id="textInput" placeholder="write something..."></textarea>
+        <div class="textarea-wrapper">
+          <div id="textInput" class="text-editor" contenteditable="true"></div>
+          <div class="word-count" id="wordCount">0 / 2000 words</div>
+        </div>
         <button id="createBtn">Create FSM</button>
         <div class="status" id="status"></div>
       </div>

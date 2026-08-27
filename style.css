@@ -1,7 +1,7 @@
 :root {
-  --light-grey: #eeeeee;
-  --text: #6b6b6b;
-  --btn: #6b6b6b;
+  --off-white: #eeeeee;
+  --dark-grey: #6b6b6b;
+  --light-grey: #aaaaaa;
 }
 
 * {
@@ -10,9 +10,9 @@
 
 body {
   margin: 0;
-  background: var(--light-grey);
+  background: var(--off-white);
   font-family: "Jetbrains Mono", monospace;
-  color: var(--text);
+  color: var(--dark-grey);
   padding-top: 32px;
   padding-bottom: 32px;
   padding-left: 128px;
@@ -24,7 +24,7 @@ h1 {
   font-size: 28px;
   font-weight: 400;
   letter-spacing: 0.5px;
-  color: var(--text);
+  color: var(--dark-grey);
 }
 
 .layout {
@@ -35,8 +35,8 @@ h1 {
 
 .canvas-panel {
   flex: 1;
-  border: 1.5px solid var(--text);
-  background: var(--light-grey);
+  border: 1.5px solid var(--dark-grey);
+  background: var(--off-white);
   height: 640px;
   overflow: hidden;
   position: relative;
@@ -74,7 +74,7 @@ h1 {
   padding: 0;
   font-size: 24px;
   line-height: 1;
-  border: 1.5px solid var(--text);
+  border: 1.5px solid var(--dark-grey);
 }
 
 .empty-hint {
@@ -82,7 +82,7 @@ h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #aaaaaa;
+  color: var(--light-grey);
   font-size: 14px;
 }
 
@@ -90,29 +90,44 @@ h1 {
   width: 340px;
   display: flex;
   flex-direction: column;
-  border: 1.5px solid var(--text);
+  border: 1.5px solid var(--dark-grey);
   padding: 20px;
   gap: 14px;
 }
 
-textarea {
+.textarea-wrapper {
+  position: relative;
   width: 100%;
-  height: 498px;
-  resize: none;
-  border: 1.5px solid var(--text);
-  background: var(--light-grey);
-  font-family: inherit;
-  font-size: 14px;
-  color: var(--text);
-  padding: 12px;
-  outline: none;
-  scrollbar-width: thin;
-  scrollbar-color: #aaaaaa transparent;
 }
 
-textarea::placeholder {
-  color: #aaaaaa;
-  opacity: 1;
+.text-editor {
+  width: 100%;
+  height: 260px;
+  border: 1.5px solid var(--dark-grey);
+  background: var(--off-white);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--dark-grey);
+  padding: 12px;
+  outline: none;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  padding-bottom: 24px;
+}
+
+.text-editor:empty::before {
+  content: "write something...";
+  color: var(--light-grey);
+  pointer-events: none;
+}
+
+.word-count {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-size: 11px;
+  color: var(--light-grey);
+  pointer-events: none;
 }
 
 button {
@@ -121,11 +136,13 @@ button {
   letter-spacing: 1px;
   padding: 12px 16px;
   cursor: pointer;
+  scrollbar-color: var(--light-grey) transparent;
+  scrollbar-width: thin;
   text-transform: uppercase;
-  background: var(--btn);
-  color: var(--light-grey);
-  border: 1px solid var(--text);
-  border-color: var(--btn);
+  background: var(--dark-grey);
+  color: var(--off-white);
+  border: 1px solid var(--dark-grey);
+  border-color: var(--dark-grey);
 }
 
 button:disabled {
@@ -144,19 +161,19 @@ button:disabled {
 }
 
 .node-circle {
-  fill: var(--light-grey);
-  stroke: var(--text);
+  fill: var(--off-white);
+  stroke: var(--dark-grey);
   stroke-width: 1.5;
 }
 
 .node-circle-inner {
   fill: none;
-  stroke: var(--text);
+  stroke: var(--dark-grey);
   stroke-width: 1.5;
 }
 
 .node-label {
-  fill: var(--text);
+  fill: var(--dark-grey);
   font-family: "Jetbrains Mono", monospace;
   text-anchor: middle;
   dominant-baseline: middle;
@@ -164,19 +181,19 @@ button:disabled {
 
 .edge-path {
   fill: none;
-  stroke: var(--text);
+  stroke: var(--dark-grey);
   stroke-width: 1.5;
 }
 
 .edge-label {
-  fill: var(--text);
+  fill: var(--dark-grey);
   font-family: "Jetbrains Mono", monospace;
   font-size: 11px;
   text-anchor: middle;
 }
 
 .start-arrow {
-  stroke: var(--text);
+  stroke: var(--dark-grey);
   stroke-width: 1.5;
   fill: none;
 }
