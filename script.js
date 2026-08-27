@@ -1,3 +1,7 @@
+function cssVar(name) {
+  return getComputedStyle(document.body).getPropertyValue(name).trim();
+}
+
 // ======== TEXT -> FSM REPRESENTATION ========
 
 function textToFSM(text) {
@@ -224,7 +228,10 @@ function renderFSM(fsm) {
     markerUnits: "strokeWidth",
   });
   marker.appendChild(
-    svgEl("path", { d: "M 0 0 L 10 5 L 0 10 z", fill: "#6b6b6b" }),
+    svgEl("path", {
+      d: "M 0 0 L 10 5 L 0 10 z",
+      fill: cssVar("--theme-color"),
+    }),
   );
   defs.appendChild(marker);
   svg.appendChild(defs);
@@ -265,8 +272,7 @@ function drawNode(svg, p) {
       cx: p.x,
       cy: p.y,
       r: RADIUS,
-      fill: "#eeeeee",
-      stroke: "#6b6b6b",
+      stroke: cssVar("--theme-color"),
       "vector-effect": "non-scaling-stroke",
       "stroke-width": 1.5,
     }),
@@ -279,7 +285,7 @@ function drawNode(svg, p) {
         cy: p.y,
         r: RADIUS - 7,
         fill: "none",
-        stroke: "#6b6b6b",
+        stroke: cssVar("--theme-color"),
         "vector-effect": "non-scaling-stroke",
         "stroke-width": 1.5,
       }),
@@ -301,7 +307,7 @@ function drawNode(svg, p) {
     class: "node-label",
     x: p.x,
     y: p.y + 1,
-    fill: "#6b6b6b",
+    fill: cssVar("--theme-color"),
     "font-family": "'Jetbrains Mono', monospace",
     "font-size": fontSize,
     "text-anchor": "middle",
@@ -339,7 +345,7 @@ function drawEdge(svg, from, to, label, fanIndex) {
       class: "edge-path",
       d: path,
       fill: "none",
-      stroke: "#6b6b6b",
+      stroke: cssVar("--theme-color"),
       "stroke-width": 1.5,
       "vector-effect": "non-scaling-stroke",
       "marker-end": "url(#arrowhead)",
@@ -351,7 +357,7 @@ function drawEdge(svg, from, to, label, fanIndex) {
       class: "edge-label",
       x: cx,
       y: cy - 6,
-      fill: "#6b6b6b",
+      fill: cssVar("--theme-color"),
       "font-family": "'Jetbrains Mono', monospace",
       "font-size": 11,
       "text-anchor": "middle",
@@ -372,7 +378,7 @@ function drawSelfLoop(svg, p, label) {
       class: "edge-path",
       d: path,
       fill: "none",
-      stroke: "#6b6b6b",
+      stroke: cssVar("--theme-color"),
       "stroke-width": 1.5,
       "vector-effect": "non-scaling-stroke",
       "marker-end": "url(#arrowhead)",
@@ -383,7 +389,7 @@ function drawSelfLoop(svg, p, label) {
       class: "edge-label",
       x: topX,
       y: topY - loopR - 4,
-      fill: "#6b6b6b",
+      fill: cssVar("--theme-color"),
       "font-family": "'Jetbrains Mono', monospace",
       "font-size": 11,
       "text-anchor": "middle",
@@ -539,7 +545,23 @@ function updateWordLimit() {
     wordCount.classList.remove("limit-exceeded");
   }
 }
+textInput.addEventListener("paste", (e) => {
+  e.preventDefault();
+  const text = (e.clipboardData || window.clipboardData).getData("text/plain");
+  document.execCommand("insertText", false, text);
+});
 
 textInput.addEventListener("input", () => {
   updateWordLimit();
+});
+
+document.querySelectorAll(".theme-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.body.dataset.theme = btn.dataset.theme;
+    document
+      .querySelectorAll(".theme-btn")
+      .forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    if (currentFSM) renderFSM(currentFSM); // repaint diagram in new theme
+  });
 });
