@@ -29,23 +29,25 @@
 
       <div class="sidebar">
         <div class="textarea-wrapper">
-          <div id="textInput" class="text-editor" contenteditable="true"></div>
+          <div class="text-editor" id="textEditor" contenteditable="true"></div>
+          <div class="text-editor-placeholder">write something...</div>
           <div class="word-count" id="wordCount">0 / 2000 words</div>
         </div>
         <button id="createBtn">Create FSM</button>
-        <div class="status" id="status"></div>
+        <div class="status" id="status">awaiting generation</div>
 
-        <div class="theme-buttons">
-          <button
-            class="theme-btn active"
-            data-theme="grey"
-            style="--swatch: #6b6b6b"
-          ></button>
-          <button
-            class="theme-btn"
-            data-theme="blue"
-            style="--swatch: #274bc2"
-          ></button>
+        <div class="controls">
+          <h2>Colors</h2>
+          <div class="theme-buttons">
+            <label class="color-picker">
+              <span>ink</span>
+              <input type="color" id="darkColorPicker" value="#6b6b6b" />
+            </label>
+            <label class="color-picker fill-picker">
+              <span>fill</span>
+              <input type="color" id="bgColorPicker" value="#eeeeee" />
+            </label>
+          </div>
         </div>
       </div>
     </div>

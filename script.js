@@ -501,7 +501,7 @@ function setStatus(msg, isError) {
 }
 
 document.getElementById("createBtn").addEventListener("click", () => {
-  const text = document.getElementById("textInput").innerText;
+  const text = document.getElementById("textEditor").innerText;
   const words = text.trim().split(/\s+/).filter(Boolean);
   try {
     if (words.length > MAX_WORDS) {
@@ -525,16 +525,16 @@ document.getElementById("createBtn").addEventListener("click", () => {
   }
 });
 
-// ======== WORD LIMIT ========
+// ======== TEXT EDITOR ========
 
 const MAX_WORDS = 2000;
-const textInput = document.getElementById("textInput");
+const textEditor = document.getElementById("textEditor");
 const wordCount = document.getElementById("wordCount");
 
 let updatingText = false;
 
 function updateWordLimit() {
-  const text = textInput.innerText;
+  const text = textEditor.innerText;
   const words = text.trim().split(/\s+/).filter(Boolean);
 
   wordCount.textContent = `${words.length} / ${MAX_WORDS}`;
@@ -545,23 +545,50 @@ function updateWordLimit() {
     wordCount.classList.remove("limit-exceeded");
   }
 }
-textInput.addEventListener("paste", (e) => {
+textEditor.addEventListener("paste", (e) => {
   e.preventDefault();
   const text = (e.clipboardData || window.clipboardData).getData("text/plain");
   document.execCommand("insertText", false, text);
 });
 
-textInput.addEventListener("input", () => {
+textEditor.addEventListener("input", () => {
   updateWordLimit();
 });
 
-document.querySelectorAll(".theme-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document.body.dataset.theme = btn.dataset.theme;
-    document
-      .querySelectorAll(".theme-btn")
-      .forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    if (currentFSM) renderFSM(currentFSM); // repaint diagram in new theme
-  });
-});
+const editor = document.querySelector(".text-editor");
+const placeholder = document.querySelector(".text-editor-placeholder");
+
+function updatePlaceholder() {
+  placeholder.style.display = editor.innerText.trim() === "" ? "block" : "none";
+}
+
+editor.addEventListener("input", updatePlaceholder);
+updatePlaceholder();
+
+// ======== COLOR PICKER ========
+
+const darkPicker = document.getElementById("darkColorPicker");
+const bgPicker = document.getElementById("bgColorPicker");
+
+function hexToRgb(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+}
+
+function lighten(hex, amount) {
+  const { r, g, b } = hexToRgb(hex);
+  const mix = (c) => Math.round(c + (255 - c) * amount);
+  return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+}
+
+function applyColors() {
+  const dark = darkPicker.value;
+  const bg = bgPicker.value;
+  document.body.style.setProperty("--theme-color", dark);
+  document.body.style.setProperty("--secondary-color", lighten(dark, 0.4));
+  document.body.style.setProperty("--bg-color", bg);
+  if (currentFSM) renderFSM(currentFSM);
+}
+
+darkPicker.addEventListener("input", applyColors);
+bgPicker.addEventListener("input", applyColors);
