@@ -4,12 +4,6 @@
   --secondary-color: #aaaaaa;
 }
 
-body[data-theme="blue"] {
-  /* --bg-color: #eef7dd; */
-  --theme-color: #274bc2;
-  --secondary-color: #508be8;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -50,6 +44,7 @@ h2 {
 
 .canvas-panel {
   flex: 1;
+  flex-shrink: 0;
   border: 1.5px solid var(--theme-color);
   background: var(--bg-color);
   height: 640px;
@@ -262,4 +257,45 @@ button:disabled {
   stroke: var(--theme-color);
   stroke-width: 1.5;
   fill: none;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .layout {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .canvas-panel {
+    height: 320px;
+    width: 100%;
+    flex: none;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .text-editor {
+    height: 160px;
+  }
+
+  .zoom-controls button {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
 }
