@@ -184,6 +184,7 @@ button:disabled {
 .theme-buttons {
   display: flex;
   gap: 8px;
+  margin-bottom: 8px;
 }
 
 .color-picker {
@@ -257,6 +258,52 @@ button:disabled {
   stroke: var(--theme-color);
   stroke-width: 1.5;
   fill: none;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--theme-color);
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+/* Chrome/Safari thumb */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--bg-color);
+  border: 1.5px solid var(--theme-color);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Firefox thumb */
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: var(--bg-color);
+  border: 1.5px solid var(--theme-color);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Firefox track */
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: var(--theme-color);
+  border-radius: 999px;
 }
 
 @media (max-width: 768px) {

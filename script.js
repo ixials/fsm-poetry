@@ -222,8 +222,8 @@ function renderFSM(fsm) {
     viewBox: "0 0 10 10",
     refX: 9,
     refY: 5,
-    markerWidth: 7,
-    markerHeight: 7,
+    markerWidth: arrowSize,
+    markerHeight: arrowSize,
     orient: "auto-start-reverse",
     markerUnits: "strokeWidth",
   });
@@ -274,7 +274,7 @@ function drawNode(svg, p) {
       r: RADIUS,
       stroke: cssVar("--theme-color"),
       "vector-effect": "non-scaling-stroke",
-      "stroke-width": 1.5,
+      "stroke-width": 1,
     }),
   );
   if (p.accept) {
@@ -287,7 +287,7 @@ function drawNode(svg, p) {
         fill: "none",
         stroke: cssVar("--theme-color"),
         "vector-effect": "non-scaling-stroke",
-        "stroke-width": 1.5,
+        "stroke-width": 1,
       }),
     );
   }
@@ -346,7 +346,7 @@ function drawEdge(svg, from, to, label, fanIndex) {
       d: path,
       fill: "none",
       stroke: cssVar("--theme-color"),
-      "stroke-width": 1.5,
+      "stroke-width": 1,
       "vector-effect": "non-scaling-stroke",
       "marker-end": "url(#arrowhead)",
     }),
@@ -379,7 +379,7 @@ function drawSelfLoop(svg, p, label) {
       d: path,
       fill: "none",
       stroke: cssVar("--theme-color"),
-      "stroke-width": 1.5,
+      "stroke-width": 1,
       "vector-effect": "non-scaling-stroke",
       "marker-end": "url(#arrowhead)",
     }),
@@ -592,3 +592,11 @@ function applyColors() {
 
 darkPicker.addEventListener("input", applyColors);
 bgPicker.addEventListener("input", applyColors);
+
+const arrowSizePicker = document.getElementById("arrowSizePicker");
+let arrowSize = 6;
+
+arrowSizePicker.addEventListener("input", () => {
+  arrowSize = Number(arrowSizePicker.value);
+  if (currentFSM) renderFSM(currentFSM);
+});
