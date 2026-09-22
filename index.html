@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>fsm-poetry</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
@@ -13,12 +13,12 @@
     <style></style>
   </head>
   <body>
-    <h1>FINITE STATE MACHINE POETRY</h1>
+    <h1>Finite State Machine Poetry</h1>
 
     <div class="layout">
       <div class="canvas-panel" id="canvasPanel">
         <div class="svg-host" id="svgHost">
-          <div class="empty-hint" id="emptyHint">your fsm will appear here</div>
+          <div class="empty-hint" id="emptyHint">Your fsm will appear here</div>
         </div>
         <div class="zoom-controls" id="zoomControls" style="display: none">
           <button type="button" id="zoomInBtn" title="Zoom in">+</button>
@@ -31,26 +31,26 @@
       <div class="sidebar">
         <div class="textarea-wrapper">
           <div class="text-editor" id="textEditor" contenteditable="true"></div>
-          <div class="text-editor-placeholder">write something...</div>
+          <div class="text-editor-placeholder">Write something...</div>
           <div class="word-count" id="wordCount">0 / 2000 words</div>
         </div>
         <button id="createBtn">Create FSM</button>
-        <div class="status" id="status">awaiting generation</div>
+        <div class="status" id="status">Awaiting generation...</div>
 
         <div class="controls">
-          <h2>COLORS</h2>
+          <h2>Colors</h2>
           <div class="theme-buttons">
             <label class="color-picker">
-              <span>ink</span>
+              <span>Ink</span>
               <input type="color" id="darkColorPicker" value="#6b6b6b" />
             </label>
             <label class="color-picker fill-picker">
-              <span>fill</span>
+              <span>Fill</span>
               <input type="color" id="bgColorPicker" value="#eeeeee" />
             </label>
           </div>
 
-          <h2>ARROW SIZE</h2>
+          <h2>Arrow Size</h2>
           <input
             id="arrowSizePicker"
             type="range"

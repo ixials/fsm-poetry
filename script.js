@@ -199,7 +199,7 @@ function renderFSM(fsm) {
     const hint = document.createElement("div");
     hint.className = "empty-hint";
     hint.id = "emptyHint";
-    hint.textContent = "your fsm will appear here";
+    hint.textContent = "Your fsm will appear here";
     host.appendChild(hint);
     zoomControls.style.display = "none";
     return;
@@ -505,7 +505,7 @@ document.getElementById("createBtn").addEventListener("click", () => {
   const words = text.trim().split(/\s+/).filter(Boolean);
   try {
     if (words.length > MAX_WORDS) {
-      throw new Error(`word limit exceeded (${words.length} / ${MAX_WORDS})`);
+      throw new Error(`Word limit exceeded (${words.length} / ${MAX_WORDS})`);
     }
 
     const fsm = textToFSM(text);
@@ -516,12 +516,12 @@ document.getElementById("createBtn").addEventListener("click", () => {
     renderFSM(fsm);
     setStatus(
       fsm.states.length === 0
-        ? "no states returned"
-        : `rendered ${fsm.states.length} state(s), ${fsm.transitions.length} transition(s)`,
+        ? "No states returned"
+        : `Rendered ${fsm.states.length} state(s), ${fsm.transitions.length} transition(s)`,
     );
   } catch (err) {
     console.error(err);
-    setStatus("error: " + err.message, true);
+    setStatus("Error: " + err.message, true);
   }
 });
 
@@ -537,7 +537,7 @@ function updateWordLimit() {
   const text = textEditor.innerText;
   const words = text.trim().split(/\s+/).filter(Boolean);
 
-  wordCount.textContent = `${words.length} / ${MAX_WORDS}`;
+  wordCount.textContent = `${words.length} / ${MAX_WORDS} words`;
 
   if (words.length > MAX_WORDS) {
     wordCount.classList.add("limit-exceeded");
@@ -545,6 +545,7 @@ function updateWordLimit() {
     wordCount.classList.remove("limit-exceeded");
   }
 }
+
 textEditor.addEventListener("paste", (e) => {
   e.preventDefault();
   const text = (e.clipboardData || window.clipboardData).getData("text/plain");

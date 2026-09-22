@@ -11,7 +11,7 @@
 body {
   margin: 0;
   background: var(--bg-color);
-  font-family: "Jetbrains Mono", monospace;
+  font-family: "Crimson Text", serif;
   color: var(--theme-color);
   padding-top: 32px;
   padding-bottom: 32px;
@@ -30,8 +30,8 @@ h1 {
 h2 {
   margin-top: 0px;
   margin-bottom: 0px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 400;
   letter-spacing: 0.5px;
   color: var(--theme-color);
 }
@@ -93,7 +93,8 @@ h2 {
   left: 50%;
   transform: translate(-50%, -50%);
   color: var(--secondary-color);
-  font-size: 14px;
+  font-size: 16px;
+  font-style: italic;
 }
 
 .sidebar {
@@ -116,7 +117,7 @@ h2 {
   border: 1.5px solid var(--theme-color);
   background: var(--bg-color);
   font-family: inherit;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--theme-color);
   padding: 12px;
   outline: none;
@@ -130,7 +131,7 @@ h2 {
   top: 12px;
   left: 14px;
   color: var(--secondary-color);
-  font-size: 14px;
+  font-size: 16px;
   pointer-events: none;
 }
 
@@ -138,20 +139,19 @@ h2 {
   position: absolute;
   bottom: 8px;
   right: 10px;
-  font-size: 11px;
+  font-size: 14px;
   color: var(--secondary-color);
   pointer-events: none;
 }
 
 button {
   font-family: inherit;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 1px;
   padding: 12px 16px;
   cursor: pointer;
   scrollbar-color: var(--secondary-color) transparent;
   scrollbar-width: thin;
-  text-transform: uppercase;
   background: var(--theme-color);
   color: var(--bg-color);
   border: 1px solid var(--theme-color);
@@ -164,7 +164,7 @@ button:disabled {
 }
 
 .status {
-  font-size: 12px;
+  font-size: 16px;
   color: var(--secondary-color);
   min-height: 16px;
 }
@@ -191,7 +191,7 @@ button:disabled {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
+  font-size: 14px;
   color: var(--theme-color);
   cursor: pointer;
 }
@@ -236,7 +236,7 @@ button:disabled {
 
 .node-label {
   fill: var(--theme-color);
-  font-family: "Jetbrains Mono", monospace;
+  font-family: "Crimson Text", serif;
   text-anchor: middle;
   dominant-baseline: middle;
 }
@@ -249,7 +249,7 @@ button:disabled {
 
 .edge-label {
   fill: var(--theme-color);
-  font-family: "Jetbrains Mono", monospace;
+  font-family: "Crimson Text", serif;
   font-size: 11px;
   text-anchor: middle;
 }
