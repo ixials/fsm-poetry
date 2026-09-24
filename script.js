@@ -201,6 +201,7 @@ function renderFSM(fsm) {
     hint.id = "emptyHint";
     hint.textContent = "Your fsm will appear here";
     host.appendChild(hint);
+
     zoomControls.style.display = "none";
     return;
   }
@@ -494,24 +495,45 @@ document.getElementById("zoomOutBtn").addEventListener("click", () => {
 
 let currentFSM = null;
 
+function showLoading() {
+  document.getElementById("loadingOverlay").classList.add("active");
+
+  const hint = document.getElementById("emptyHint");
+  if (hint) {
+    hint.style.display = "none";
+  }
+}
+
+function hideLoading() {
+  document.getElementById("loadingOverlay").classList.remove("active");
+}
+
 function setStatus(msg, isError) {
   const el = document.getElementById("status");
   el.textContent = msg || "";
   el.className = "status" + (isError ? " error" : "");
 }
 
-document.getElementById("createBtn").addEventListener("click", () => {
+document.getElementById("createBtn").addEventListener("click", async () => {
   const text = document.getElementById("textEditor").innerText;
   const words = text.trim().split(/\s+/).filter(Boolean);
+
   try {
     if (words.length > MAX_WORDS) {
       throw new Error(`Word limit exceeded (${words.length} / ${MAX_WORDS})`);
     }
 
+    showLoading();
+    setStatus("Generating FSM...");
+
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
     const fsm = textToFSM(text);
+
     if (!fsm || !Array.isArray(fsm.states) || !Array.isArray(fsm.transitions)) {
       throw new Error("textToFSM must return { states: [], transitions: [] }");
     }
+
     currentFSM = fsm;
     renderFSM(fsm);
     setStatus(
@@ -522,6 +544,8 @@ document.getElementById("createBtn").addEventListener("click", () => {
   } catch (err) {
     console.error(err);
     setStatus("Error: " + err.message, true);
+  } finally {
+    hideLoading();
   }
 });
 

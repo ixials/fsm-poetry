@@ -18,13 +18,16 @@
     <div class="layout">
       <div class="canvas-panel" id="canvasPanel">
         <div class="svg-host" id="svgHost">
-          <div class="empty-hint" id="emptyHint">Your fsm will appear here</div>
+          <div class="empty-hint" id="emptyHint">Your FSM will appear here</div>
         </div>
         <div class="zoom-controls" id="zoomControls" style="display: none">
           <button type="button" id="zoomInBtn" title="Zoom in">+</button>
           <button type="button" id="zoomOutBtn" title="Zoom out">
             &minus;
           </button>
+        </div>
+        <div class="loading-overlay" id="loadingOverlay">
+          <div class="spinner"></div>
         </div>
       </div>
 
