@@ -10,7 +10,6 @@
     />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <style></style>
   </head>
   <body>
     <h1>Finite State Machine Poetry</h1>
@@ -24,6 +23,9 @@
           <button type="button" id="zoomInBtn" title="Zoom in">+</button>
           <button type="button" id="zoomOutBtn" title="Zoom out">
             &minus;
+          </button>
+          <button type="button" id="screenshotBtn" title="Save screenshot">
+            ⤓
           </button>
         </div>
         <div class="loading-overlay" id="loadingOverlay">
@@ -42,7 +44,7 @@
 
         <div class="controls">
           <h2>Colors</h2>
-          <div class="theme-buttons">
+          <div class="color-controls">
             <label class="color-picker">
               <span>Ink</span>
               <input type="color" id="darkColorPicker" value="#6b6b6b" />

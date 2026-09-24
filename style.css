@@ -13,14 +13,11 @@ body {
   background: var(--bg-color);
   font-family: "Crimson Text", serif;
   color: var(--theme-color);
-  padding-top: 32px;
-  padding-bottom: 32px;
-  padding-left: 128px;
-  padding-right: 128px;
+  padding: 32px 128px;
 }
 
 h1 {
-  margin-top: 0px;
+  margin-top: 0;
   font-size: 28px;
   font-weight: 400;
   letter-spacing: 0.5px;
@@ -28,8 +25,7 @@ h1 {
 }
 
 h2 {
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin: 0;
   font-size: 18px;
   font-weight: 400;
   letter-spacing: 0.5px;
@@ -180,12 +176,9 @@ button {
   letter-spacing: 1px;
   padding: 12px 16px;
   cursor: pointer;
-  scrollbar-color: var(--secondary-color) transparent;
-  scrollbar-width: thin;
   background: var(--theme-color);
   color: var(--bg-color);
   border: 1px solid var(--theme-color);
-  border-color: var(--theme-color);
 }
 
 button:disabled {
@@ -211,7 +204,7 @@ button:disabled {
   border: 1.5px solid var(--theme-color);
 }
 
-.theme-buttons {
+.color-controls {
   display: flex;
   gap: 8px;
   margin-bottom: 8px;
@@ -284,12 +277,6 @@ button:disabled {
   text-anchor: middle;
 }
 
-.start-arrow {
-  stroke: var(--theme-color);
-  stroke-width: 1.5;
-  fill: none;
-}
-
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -338,10 +325,7 @@ input[type="range"]::-moz-range-track {
 
 @media (max-width: 768px) {
   body {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding: 20px 16px;
   }
 
   h1 {

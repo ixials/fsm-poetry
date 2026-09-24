@@ -309,7 +309,7 @@ function drawNode(svg, p) {
     x: p.x,
     y: p.y + 1,
     fill: cssVar("--theme-color"),
-    "font-family": "'Jetbrains Mono', monospace",
+    "font-family": "'Crimson Text', serif",
     "font-size": fontSize,
     "text-anchor": "middle",
     "dominant-baseline": "middle",
@@ -359,7 +359,7 @@ function drawEdge(svg, from, to, label, fanIndex) {
       x: cx,
       y: cy - 6,
       fill: cssVar("--theme-color"),
-      "font-family": "'Jetbrains Mono', monospace",
+      "font-family": "'Crimson Text', serif",
       "font-size": 11,
       "text-anchor": "middle",
     });
@@ -391,7 +391,7 @@ function drawSelfLoop(svg, p, label) {
       x: topX,
       y: topY - loopR - 4,
       fill: cssVar("--theme-color"),
-      "font-family": "'Jetbrains Mono', monospace",
+      "font-family": "'Crimson Text', serif",
       "font-size": 11,
       "text-anchor": "middle",
     });
@@ -399,6 +399,62 @@ function drawSelfLoop(svg, p, label) {
     svg.appendChild(t);
   }
 }
+
+let currentFSM = null;
+
+function showLoading() {
+  document.getElementById("loadingOverlay").classList.add("active");
+
+  const hint = document.getElementById("emptyHint");
+  if (hint) {
+    hint.style.display = "none";
+  }
+}
+
+function hideLoading() {
+  document.getElementById("loadingOverlay").classList.remove("active");
+}
+
+function setStatus(msg, isError) {
+  const el = document.getElementById("status");
+  el.textContent = msg || "";
+  el.className = "status" + (isError ? " error" : "");
+}
+
+document.getElementById("createBtn").addEventListener("click", async () => {
+  const text = document.getElementById("textEditor").innerText;
+  const words = text.trim().split(/\s+/).filter(Boolean);
+
+  try {
+    if (words.length > MAX_WORDS) {
+      throw new Error(`Word limit exceeded (${words.length} / ${MAX_WORDS})`);
+    }
+
+    showLoading();
+    setStatus("Generating FSM...");
+
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    const fsm = textToFSM(text);
+
+    if (!fsm || !Array.isArray(fsm.states) || !Array.isArray(fsm.transitions)) {
+      throw new Error("textToFSM must return { states: [], transitions: [] }");
+    }
+
+    currentFSM = fsm;
+    renderFSM(fsm);
+    setStatus(
+      fsm.states.length === 0
+        ? "No states returned"
+        : `Rendered ${fsm.states.length} state(s), ${fsm.transitions.length} transition(s)`,
+    );
+  } catch (err) {
+    console.error(err);
+    setStatus("Error: " + err.message, true);
+  } finally {
+    hideLoading();
+  }
+});
 
 // ======== ZOOM & PAN ========
 
@@ -479,6 +535,90 @@ function attachZoomPan(svg) {
   svg.addEventListener("pointercancel", endPan);
 }
 
+function saveScreenshot() {
+  const svg = document.querySelector("#svgHost svg");
+
+  if (!svg) {
+    setStatus("Nothing to screenshot", true);
+    return;
+  }
+
+  const clone = svg.cloneNode(true);
+
+  // Copy computed styles into every SVG element
+  const originalElements = svg.querySelectorAll("*");
+  const clonedElements = clone.querySelectorAll("*");
+
+  originalElements.forEach((original, i) => {
+    const cloneEl = clonedElements[i];
+    const styles = window.getComputedStyle(original);
+
+    [
+      "fill",
+      "stroke",
+      "stroke-width",
+      "font-family",
+      "font-size",
+      "font-weight",
+      "text-anchor",
+      "dominant-baseline",
+    ].forEach((property) => {
+      const value = styles.getPropertyValue(property);
+      if (value) {
+        cloneEl.setAttribute(property, value);
+      }
+    });
+  });
+
+  // Add background
+  const bg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+
+  bg.setAttribute("width", "100%");
+  bg.setAttribute("height", "100%");
+  bg.setAttribute("fill", cssVar("--bg-color"));
+
+  clone.insertBefore(bg, clone.firstChild);
+
+  const serializer = new XMLSerializer();
+  const svgString = serializer.serializeToString(clone);
+
+  const blob = new Blob([svgString], {
+    type: "image/svg+xml;charset=utf-8",
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  const img = new Image();
+
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+
+    const vb = svg.viewBox.baseVal;
+
+    canvas.width = vb.width;
+    canvas.height = vb.height;
+
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    URL.revokeObjectURL(url);
+
+    canvas.toBlob((png) => {
+      const download = URL.createObjectURL(png);
+
+      const a = document.createElement("a");
+      a.href = download;
+      a.download = "fsm-poetry.png";
+      a.click();
+
+      URL.revokeObjectURL(download);
+    });
+  };
+
+  img.src = url;
+}
+
 document.getElementById("zoomInBtn").addEventListener("click", () => {
   const svg = document.querySelector("#canvasPanel svg");
   if (!svg) return;
@@ -493,69 +633,15 @@ document.getElementById("zoomOutBtn").addEventListener("click", () => {
   applyZoom(svg, 1.25, vb.x + vb.width / 2, vb.y + vb.height / 2);
 });
 
-let currentFSM = null;
-
-function showLoading() {
-  document.getElementById("loadingOverlay").classList.add("active");
-
-  const hint = document.getElementById("emptyHint");
-  if (hint) {
-    hint.style.display = "none";
-  }
-}
-
-function hideLoading() {
-  document.getElementById("loadingOverlay").classList.remove("active");
-}
-
-function setStatus(msg, isError) {
-  const el = document.getElementById("status");
-  el.textContent = msg || "";
-  el.className = "status" + (isError ? " error" : "");
-}
-
-document.getElementById("createBtn").addEventListener("click", async () => {
-  const text = document.getElementById("textEditor").innerText;
-  const words = text.trim().split(/\s+/).filter(Boolean);
-
-  try {
-    if (words.length > MAX_WORDS) {
-      throw new Error(`Word limit exceeded (${words.length} / ${MAX_WORDS})`);
-    }
-
-    showLoading();
-    setStatus("Generating FSM...");
-
-    await new Promise((resolve) => setTimeout(resolve, 50));
-
-    const fsm = textToFSM(text);
-
-    if (!fsm || !Array.isArray(fsm.states) || !Array.isArray(fsm.transitions)) {
-      throw new Error("textToFSM must return { states: [], transitions: [] }");
-    }
-
-    currentFSM = fsm;
-    renderFSM(fsm);
-    setStatus(
-      fsm.states.length === 0
-        ? "No states returned"
-        : `Rendered ${fsm.states.length} state(s), ${fsm.transitions.length} transition(s)`,
-    );
-  } catch (err) {
-    console.error(err);
-    setStatus("Error: " + err.message, true);
-  } finally {
-    hideLoading();
-  }
-});
+document
+  .getElementById("screenshotBtn")
+  .addEventListener("click", saveScreenshot);
 
 // ======== TEXT EDITOR ========
 
 const MAX_WORDS = 2000;
 const textEditor = document.getElementById("textEditor");
 const wordCount = document.getElementById("wordCount");
-
-let updatingText = false;
 
 function updateWordLimit() {
   const text = textEditor.innerText;
